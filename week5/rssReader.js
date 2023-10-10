@@ -1,5 +1,5 @@
 
-var downloadedRss = null;
+var myRss = null;
 
 
 
@@ -17,15 +17,54 @@ document.addEventListener('DOMContentLoaded', function() {
     // append the div to the body of the HTML document
     document.body.appendChild(div);
     // END: abpxx6d04wxr
-    getRssData();
+    flow();
 
 });
 
 //get data
 async function getRssData(){
     //get data
-    const response = await fetch("http://feeds.bbci.co.uk/news/england/london/rss.xml");
+    
+    const response = await fetch("https://moxie.foxnews.com/google-publisher/latest.xml");
     const data = await response.text();
-    console.log(data);
-    return data;
+    const parser = new DOMParser();
+    const xmlDoc = parser.parseFromString(data, "text/xml");
+    const items = xmlDoc.querySelectorAll("item");
+    const itemArray = [];
+    for(let i = 0; i < items.length; i++){
+        var currentItem = items[i];
+        const title = currentItem.querySelector("title").textContent;
+        const description = currentItem.querySelector("description").textContent;
+        const link = currentItem.querySelector("link").textContent;
+        console.log(title);
+        itemArray.push({title, description, link});
+    }
+    return itemArray;
+
+}
+
+async function flow(){
+    myRss = await getRssData();
+    generateSite();
+
+}
+
+
+async function generateSite(){
+    for(var i = 0; i < myRss.length; i++){
+        var currentItem = myRss[i];
+        var title = currentItem.title;
+        var description = currentItem.description;
+        var link = currentItem.link;
+        var html = `
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">${title}</h5>
+                <p class="card-text">${description}</p>
+                <a href="${link}" class="btn btn-primary">Read More</a>
+            </div>
+        </div>
+        `;
+        document.body.innerHTML += html;
+    }
 }
