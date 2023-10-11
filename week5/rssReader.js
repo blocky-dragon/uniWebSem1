@@ -10,8 +10,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // set the innerHTML of the div to some basic HTML
     div.innerHTML = `
-            <h1>Hello World!</h1>
-            <p>This is some basic HTML created using JavaScript.</p>
+            <h1>RSS Parser</h1>
+            <p>Current example: Fox news</p>
     `;
 
     // append the div to the body of the HTML document
@@ -59,7 +59,7 @@ async function generateSite(){
         var html = `
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title">${title}</h5>
+                <p class="card-title">${title}</p>
                 <p class="card-text">${description}</p>
                 <a href="${link}" class="btn btn-primary">Read More</a>
             </div>
