@@ -2,15 +2,32 @@
 const express = require('express');
 const app = express();
 const port = 3000;
-const io = require('socket.io')(port);
+server = app.listen(port)
+const io = require('socket.io')(server);
 
-app.set('view engine', 'ejs');
+app.set('view engine', 'pug');
 
+
+
+app.use(express.static('public'))
 
 app.get('/', (req, res) => {
-  res.send('Welcome to my server!');
+  res.render('index');
 });
 
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
-});
+
+io.on('connection', (socket) => {
+  console.log('a user connected');
+
+  socket.username = "Anonymous"
+
+  socket.on('change_username', (data) => {
+    console.log("username changed")
+    socket.username = data.username
+  })
+
+  socket.on('new_message', (data) => {
+    console.log("new message")
+    io.sockets.emit('new_message', {message : data.message, username : socket.username});
+  })
+})
