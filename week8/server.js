@@ -15,6 +15,10 @@ app.get('/', (req, res) => {
   res.render('index');
 });
 
+app.get('*', (req, res) => {
+  res.render('index');
+});
+
 
 io.on('connection', (socket) => {
   console.log('a user connected');
