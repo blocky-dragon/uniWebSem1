@@ -2,17 +2,20 @@
 doctype html
 html
     head
-        title My Title
+        title Chat Room
+        link(rel="stylesheet", href="pug.css")
         script(src="/socket.io/socket.io.js")
         script(src="http://code.jquery.com/jquery-latest.min.js")
         script(src="chat.js")
 
     body
-        h1 Hello, world!
-        p This is a very basic Pug file.
-        button#username Change Username
-        p#chatroom CHATROOM
+        h1#mainHeading Chat Room
         input#message(type="text", placeholder="Enter your text here")
         button#send_message Send Message
+        p#chatroom
+        div.userName
+            button#change_username  Tap to change username
+            input#username_input(type="text", placeholder="Enter your username here")
+            p#myUsername You are currently known as:
     
         

@@ -1,14 +1,12 @@
 
-var socket = io();
 
-var randomUsername = ""
+var currentUserName = "Anonymous"
 
 $(function(){
     var socket = io('http://localhost:3000');
     console.log("loaded I think")
 
     var message = $("#message")
-    var username = $("#username")
     var send_message = $("#send_message")
     var send_username = $("#send_username")
     var chatroom = $("#chatroom")
@@ -16,11 +14,39 @@ $(function(){
 
     
 
-    username.click(function(){
-        randomUsername = Math.random().toString(36).substring(7);
-        console.log(randomUsername)
-        socket.emit('change_username', {username : randomUsername})
-    })
+    var usernameInput = $("#username_input");
+    var changeUsername = $("#change_username");
+    var userNameShower = $("#myUsername");
+
+    usernameInput.hide();
+    changeUsername.click(function(){
+        usernameInput.show();
+    });
+
+    //loaders from storage
+    var storedUsername = sessionStorage.getItem('username');
+    if (storedUsername) {
+        currentUserName = storedUsername;
+        userNameShower.text(currentUserName);
+    }
+    else{
+        userNameShower.text(currentUserName);
+    }
+    
+
+
+    usernameInput.keypress(function(event) {
+        if (event.keyCode === 13) {
+            var newUsername = usernameInput.val();
+            if (newUsername !== "") {
+                currentUserName = newUsername;
+                sessionStorage.setItem('username', currentUserName);
+                socket.emit('change_username', {username : currentUserName})
+                usernameInput.hide();
+                userNameShower.text(currentUserName);
+            }
+        }
+    });
 
     send_message.click(function(){
         console.log(message.val())
