@@ -9,4 +9,4 @@ document.addEventListener('DOMContentLoaded', (event) => {
 });
 
 
-console.log("hello world");
+console.log("passwordChecker.js loaded");
